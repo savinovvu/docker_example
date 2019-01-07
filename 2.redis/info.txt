@@ -1,0 +1,11 @@
+docker pull redis - download image
+docker run --name myredis -d redis - run image with background mode ( -d param)
+docker run --rm -it --link myredis:redis redis /bin/bash - start redis cli
+redis-cli -h redis -p 6379 - connect to redis
+
+# make backup
+docker run --rm --volumes-from myredis -v $(pwd)/backup:/backup \
+debian cp /data/dump.rdb /backup/
+
+docker stop myredis # stop myredis container
+docker rm -v myredis # delete container
